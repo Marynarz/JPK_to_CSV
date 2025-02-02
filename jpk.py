@@ -27,8 +27,22 @@ class Document_JPK:
             self.NumerFaPZ,
         )
 
+    def __iter__(self):
+        return iter(
+            [
+                self.NumerPZ,
+                self.DataPZ,
+                self.WartoscPZ,
+                self.DataOtrzymania_PZ,
+                self.Dostawca,
+                self.NumerFaPZ,
+            ]
+        )
 
-records = []
+
+records = [
+    Document_JPK("Numer", "Data", "Wartosc", "Data otrzymania", "Dostawca", "Numer FV")
+]
 
 
 def parseXML(xmlfile):
@@ -85,13 +99,22 @@ def parseXML(xmlfile):
             )
             records.append(doc)
 
-    print("Znaleziono: ")
+    print("Znaleziono:")
     for record in records:
         print(record)
 
 
+def generate_csv(filename="dokumenty.csv"):
+    print("\nGenerowanie pliku csv: {}".format(filename))
+    with open(filename, "w") as csvfile:
+        writer = csv.writer(csvfile, dialect="excel")
+        writer.writerows(records)
+    print("Wygenerowano: {}".format(filename))
+
+
 def main():
     parseXML("test.xml")
+    generate_csv()
 
 
 if __name__ == "__main__":
